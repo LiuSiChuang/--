@@ -1,10 +1,15 @@
+"""
+main.py
+Главный файл игры "Изгиб Питона".
+"""
+
 import pygame
-from config import BLACK, FPS, CELL_SIZE
+from config import WINDOW_WIDTH, WINDOW_HEIGHT, CELL_SIZE, BLACK, FPS
 from game_objects import Snake, Apple
 
 
 def handle_keys(snake):
-    """Обработка нажатий клавиш."""
+    """Обрабатывает нажатия клавиш и задаёт новое направление змейки."""
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             pygame.quit()
@@ -21,8 +26,9 @@ def handle_keys(snake):
 
 
 def main():
+    """Главная функция игры, содержит основной игровой цикл."""
     pygame.init()
-    screen = pygame.display.set_mode((640, 480))
+    screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
     pygame.display.set_caption("Изгиб Питона")
     clock = pygame.time.Clock()
 
@@ -34,14 +40,18 @@ def main():
         snake.update_direction()
         snake.move()
 
+        # Проверка, съела ли змейка яблоко
         if snake.get_head_position() == apple.position:
             snake.length += 1
             apple.randomize_position()
 
+        # Отрисовка объектов
         screen.fill(BLACK)
         snake.draw(screen)
         apple.draw(screen)
         pygame.display.update()
+
+        # Ограничение FPS
         clock.tick(FPS)
 
 
